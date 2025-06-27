@@ -1,0 +1,110 @@
+// LeetCode: 707
+// Problem name: Design Linked List (Using Singly Linked List)
+// https://leetcode.com/problems/design-linked-list/
+//
+// Approach:
+// - Use a simple Node class with `val` and `next`.
+// - Maintain `head` and `size` for the linked list.
+// - Implement operations:
+//     → get(index): Traverse and return value at index
+//     → addAtHead(val): Insert at beginning
+//     → addAtTail(val): Insert at end
+//     → addAtIndex(index, val): Insert at a specific index
+//     → deleteAtIndex(index): Delete node at specific index
+//
+// Edge cases handled:
+// - Empty list
+// - Inserting or deleting at head or tail
+// - Index out of bounds
+
+Solution
+--
+class Node {
+    int val;
+    Node next;
+
+    Node(int val) {
+        this.val = val;
+    }
+}
+
+class MyLinkedList {
+    Node head = null; // Pointer to first node
+    int size = 0;     // Number of elements in the list
+
+    public MyLinkedList() {}
+
+    // Get the value of the index-th node. If invalid, return -1.
+    public int get(int index) {
+        if (index < 0 || index >= size) {
+            return -1;
+        }
+        Node temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.next;
+        }
+        return temp.val;
+    }
+
+    // Add a node of value val at the head
+    public void addAtHead(int val) {
+        Node node = new Node(val);
+        size++;
+        node.next = head;
+        head = node;
+    }
+
+    // Append a node of value val at the tail
+    public void addAtTail(int val) {
+        Node node = new Node(val);
+        size++;
+        if (head == null) {
+            head = node;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = node;
+        }
+    }
+
+    // Add a node of value val before the index-th node
+    public void addAtIndex(int index, int val) {
+        if (index < 0 || index > size) {
+            return; // Invalid index
+        }
+        if (index == 0) {
+            addAtHead(val);
+        } else if (index == size) {
+            addAtTail(val);
+        } else {
+            Node node = new Node(val);
+            Node temp = head;
+            for (int i = 0; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            node.next = temp.next;
+            temp.next = node;
+            size++;
+        }
+    }
+
+    // Delete the index-th node in the list if the index is valid
+    public void deleteAtIndex(int index) {
+        if (index < 0 || index >= size || head == null) {
+            return;
+        }
+        if (index == 0) {
+            head = head.next;
+        } else {
+            Node temp = head;
+            for (int i = 0; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            temp.next = temp.next.next;
+        }
+        size--;
+    }
+}
+--

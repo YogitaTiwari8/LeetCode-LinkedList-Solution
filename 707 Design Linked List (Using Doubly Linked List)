@@ -1,0 +1,139 @@
+// LeetCode: 707
+// Problem name: Design Linked List (Using Doubly Linked List)
+// https://leetcode.com/problems/design-linked-list/
+// 
+// Approach:
+// - Use a Node class with `val`, `prev`, and `next` pointers.
+// - Maintain `head`, `tail`, and `size` for the linked list.
+// - Implement operations:
+//     → get(index): Traverse and return value at index
+//     → addAtHead(val): Insert at beginning
+//     → addAtTail(val): Insert at end
+//     → addAtIndex(index, val): Insert at a specific index
+//     → deleteAtIndex(index): Delete node at specific index
+//
+// Edge cases are handled:
+// - Index out of bounds
+// - Empty list
+// - Deleting or adding at head/tail
+
+Solution
+--
+class Node {
+    int val;
+    Node prev;
+    Node next;
+
+    Node(int val) {
+        this.val = val;
+    }
+}
+
+class MyLinkedList {
+    Node head; // Points to the first node
+    Node tail; // Points to the last node
+    int size;  // Current size of the linked list
+
+    public MyLinkedList() {
+        size = 0;
+    }
+
+    // Get the value of the index-th node (0-based). If invalid, return -1
+    public int get(int index) {
+        if (index < 0 || index >= size) {
+            return -1;
+        }
+        Node temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.next;
+        }
+        return temp.val;
+    }
+
+    // Add a node of value val before the first element of the list
+    public void addAtHead(int val) {
+        Node node = new Node(val);
+        size++;
+        if (head == null) {
+            // First node in the list
+            head = node;
+            tail = node;
+        } else {
+            node.next = head;
+            head.prev = node;
+            head = node;
+        }
+    }
+
+    // Append a node of value val at the last of the list
+    public void addAtTail(int val) {
+        Node node = new Node(val);
+        size++;
+        if (head == null) {
+            head = node;
+            tail = node;
+        } else {
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
+        }
+    }
+
+    // Add a node of value val before the index-th node
+    public void addAtIndex(int index, int val) {
+        if (index < 0 || index > size) {
+            return; // Invalid index
+        }
+        if (index == 0) {
+            addAtHead(val);
+        } else if (index == size) {
+            addAtTail(val);
+        } else {
+            Node node = new Node(val);
+            Node temp = head;
+            for (int i = 0; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            node.next = temp.next;
+            temp.next.prev = node;
+            temp.next = node;
+            node.prev = temp;
+            size++;
+        }
+    }
+
+    // Delete the index-th node in the list, if index is valid
+    public void deleteAtIndex(int index) {
+        if (index < 0 || index >= size || head == null) {
+            return;
+        }
+
+        if (index == 0) {
+            // Remove head
+            head = head.next;
+            if (head != null) {
+                head.prev = null;
+            } else {
+                tail = null; // List became empty
+            }
+        } else if (index == size - 1) {
+            // Remove tail
+            tail = tail.prev;
+            if (tail != null) {
+                tail.next = null;
+            } else {
+                head = null; // List became empty
+            }
+        } else {
+            // Remove middle node
+            Node temp = head;
+            for (int i = 0; i < index; i++) {
+                temp = temp.next;
+            }
+            temp.prev.next = temp.next;
+            temp.next.prev = temp.prev;
+        }
+        size--;
+    }
+}
+--

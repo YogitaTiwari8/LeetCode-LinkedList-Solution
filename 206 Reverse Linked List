@@ -1,0 +1,37 @@
+// LeetCode: 206
+// Problem name: Reverse Linked List
+// https://leetcode.com/problems/reverse-linked-list/
+// Approach:
+// - Use 3 pointers: prev, curr, and next
+// - Iterate through the list, reversing links one by one
+// - At the end, prev will point to the new head of the reversed list
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;     // Initially, previous is null
+        ListNode curr = head;     // Start from head
+
+        while (curr != null) {
+            ListNode nxt = curr.next; // Save next node
+            curr.next = prev;         // Reverse the link
+            prev = curr;              // Move prev forward
+            curr = nxt;               // Move curr forward
+        }
+
+        return prev; // New head of the reversed list
+    }
+}
+--

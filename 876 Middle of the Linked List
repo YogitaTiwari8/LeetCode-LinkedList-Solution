@@ -1,0 +1,38 @@
+// LeetCode: 876
+// Problem name: Middle of the Linked List
+// https://leetcode.com/problems/middle-of-the-linked-list/
+// Approach:
+// - Use two-pointer (slow and fast) technique
+// - Move `slow` one step and `fast` two steps at a time
+// - When `fast` reaches end, `slow` will be at the middle
+// - For even length, it returns the second middle node
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Fast moves twice as fast as slow
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Slow will be at the middle node
+        return slow;
+    }
+}
+--

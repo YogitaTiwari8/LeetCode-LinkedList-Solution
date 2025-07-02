@@ -1,0 +1,99 @@
+// LeetCode: 706
+// Problem: Design HashMap 
+// https://leetcode.com/problems/design-hashmap/
+// Approach: Using Array of LinkedList as Buckets to store multiple LinkedList of various indexing by using hashing
+
+Solution
+--
+class Node {
+    int key;
+    int value;
+    Node next;
+
+    Node(int key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+
+class MyHashMap {
+
+    int size;
+    Node[] buckets;
+
+    // Constructor
+    public MyHashMap() {
+        size = 7; // Default bucket size
+        buckets = new Node[size];
+    }
+
+    // Hash Function: Simple Modulus Hashing
+    int hash(int key) {
+        return key % size;
+    }
+
+    // Put Operation: Insert/Update Key-Value Pair
+    public void put(int key, int value) {
+        int index = hash(key);
+        Node newNode = new Node(key, value);
+        Node curr = buckets[index];
+
+        // If bucket is empty, insert directly
+        if (curr == null) {
+            buckets[index] = newNode;
+            return;
+        }
+
+        // Traverse to find existing key or end of chain
+        while (curr != null) {
+            if (curr.key == key) {
+                curr.value = value; // Update value if key exists
+                return;
+            }
+            if (curr.next == null) {
+                curr.next = newNode; // Add new node at end
+                return;
+            }
+            curr = curr.next;
+        }
+    }
+
+    // Get Operation: Retrieve value by key
+    public int get(int key) {
+        int index = hash(key);
+        Node curr = buckets[index];
+
+        while (curr != null) {
+            if (curr.key == key) {
+                return curr.value;
+            }
+            curr = curr.next;
+        }
+
+        return -1; // Key not found
+    }
+
+    // Remove Operation: Delete key-value pair
+    public void remove(int key) {
+        int index = hash(key);
+        Node curr = buckets[index];
+
+        if (curr == null) return;
+
+        // If key is at head
+        if (curr.key == key) {
+            buckets[index] = curr.next;
+            return;
+        }
+
+        // Traverse to find the key
+        while (curr.next != null) {
+            if (curr.next.key == key) {
+                curr.next = curr.next.next; // Skip the node
+                return;
+            }
+            curr = curr.next;
+        }
+    }
+}
+--

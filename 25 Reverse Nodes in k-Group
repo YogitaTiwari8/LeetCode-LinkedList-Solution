@@ -1,0 +1,88 @@
+// LeetCode: 25
+// Problem name: Reverse Nodes in k-Group
+// https://leetcode.com/problems/reverse-nodes-in-k-group/
+// Approach:
+// - Count the total nodes
+// - For every group of size k, reverse the group and connect the parts
+// - Use dummy node to handle edge cases and simplify connections
+// - Helper functions: 
+//     1. getLength() – to get the length of list
+//     2. reverse() – to reverse a given sublist
+//     3. getKthNode() – to find the kth node from a given node
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+
+    // Count total nodes in the linked list
+    int getLength(ListNode head) {
+        int count = 0;
+        while (head != null) {
+            count++;
+            head = head.next;
+        }
+        return count;
+    }
+
+    // Reverse a linked list
+    ListNode reverse(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    // Get the kth node from current
+    ListNode getKthNode(ListNode head, int k) {
+        k--;
+        while (head != null && k != 0) {
+            head = head.next;
+            k--;
+        }
+        return head;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1) return head;
+
+        int length = getLength(head);
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+        ListNode curr = head;
+
+        while (length >= k) {
+            ListNode start = curr;
+            ListNode end = getKthNode(curr, k);
+            if (end == null) break;
+
+            ListNode next = end.next;
+            end.next = null;
+            prev.next = reverse(start);
+            start.next = next;
+
+            prev = start;
+            curr = next;
+            length -= k;
+        }
+
+        return dummy.next;
+    }
+}
+--

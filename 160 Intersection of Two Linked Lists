@@ -1,0 +1,67 @@
+/*
+ * LeetCode: 160
+ * Problem: Intersection of Two Linked Lists
+ * Link: https://leetcode.com/problems/intersection-of-two-linked-lists/
+ *
+ * Approach 1 (Using HashSet):
+ * - Traverse List B and store each node reference in a HashSet
+ * - Traverse List A and check if any node exists in the set
+ * - If found, return the node (intersection point)
+ * - Else, return null
+ *
+ * Approach 2 (Two Pointer Technique - Optimal):
+ * - Use two pointers `a` and `b` starting at headA and headB
+ * - Traverse both lists, and when a pointer reaches the end, redirect it to the other list’s head
+ * - Eventually, they will either meet at the intersection or reach null simultaneously
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+Solution
+--
+public class Solution {
+
+    // Approach 1: Using HashSet
+    public ListNode getIntersectionNodeApproach1(ListNode headA, ListNode headB) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode temp = headB;
+
+        while (temp != null) {
+            set.add(temp);
+            temp = temp.next;
+        }
+
+        while (headA != null) {
+            if (set.contains(headA)) {
+                return headA;
+            }
+            headA = headA.next;
+        }
+
+        return null;
+    }
+
+    // Approach 2: Two Pointer Method (Optimal)
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode a = headA;
+        ListNode b = headB;
+
+        while (a != b) {
+            a = (a == null) ? headB : a.next;
+            b = (b == null) ? headA : b.next;
+        }
+
+        return a;
+    }
+}
+--

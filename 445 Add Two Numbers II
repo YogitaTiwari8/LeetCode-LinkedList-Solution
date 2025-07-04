@@ -1,0 +1,78 @@
+/*
+ * LeetCode: 445
+ * Problem: Add Two Numbers II
+ * Link: https://leetcode.com/problems/add-two-numbers-ii/
+ *
+ * Approach:
+ * - First, reverse both input linked lists to process from least significant digit.
+ * - Traverse both lists and add corresponding digits along with carry.
+ * - Store the result in a new linked list.
+ * - Reverse the result list at the end to get the final answer in correct order.
+ *
+ * Time Complexity: O(max(n, m)) — where n and m are the lengths of the two input lists
+ * Space Complexity: O(max(n, m)) — for the output list
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+
+    // Helper function to reverse a linked list
+    public ListNode reverse(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+
+        while (curr != null) {
+            ListNode next = curr.next; // Store next node
+            curr.next = prev;          // Reverse the pointer
+            prev = curr;               // Move prev ahead
+            curr = next;               // Move curr ahead
+        }
+
+        return prev;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // Reverse both input lists to start addition from least significant digit
+        l1 = reverse(l1);
+        l2 = reverse(l2);
+
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        int carry = 0;
+
+        // Loop until both lists and carry are exhausted
+        while (l1 != null || l2 != null || carry != 0) {
+            int sum = carry;
+
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+
+            carry = sum / 10;
+            curr.next = new ListNode(sum % 10);
+            curr = curr.next;
+        }
+
+        // Reverse result to restore the correct order
+        return reverse(dummy.next);
+    }
+}
+--

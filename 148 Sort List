@@ -1,0 +1,54 @@
+/*
+ * LeetCode: 148
+ * Problem: Sort List
+ * Link: https://leetcode.com/problems/sort-list/
+ *
+ * Approach:
+ * - Traverse the linked list and store all values in an ArrayList.
+ * - Sort the ArrayList using built-in `Collections.sort()`.
+ * - Traverse the linked list again and assign sorted values back to the nodes.
+ *
+ * Time Complexity: O(n log n) — for sorting the list
+ * Space Complexity: O(n) — for storing values in the list
+ *
+ * Note: This is not an in-place sort. For an in-place O(n log n) solution, merge sort on linked list is required.
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+    public ListNode sortList(ListNode head) {
+        List<Integer> list = new ArrayList<>();
+        ListNode temp = head;
+
+        // Step 1: Store all node values in a list
+        while (temp != null) {
+            list.add(temp.val);
+            temp = temp.next;
+        }
+
+        // Step 2: Sort the list
+        Collections.sort(list);
+
+        // Step 3: Assign sorted values back to the linked list
+        temp = head;
+        for (int val : list) {
+            temp.val = val;
+            temp = temp.next;
+        }
+
+        return head;
+    }
+}
+--

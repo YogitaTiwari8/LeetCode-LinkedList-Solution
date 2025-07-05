@@ -1,0 +1,63 @@
+/*
+ * LeetCode: 24
+ * Problem name: Swap Nodes in Pairs
+ * Link: https://leetcode.com/problems/swap-nodes-in-pairs/
+ *
+ * Approach:
+ * - Use three pointers: `prev`, `curr`, and `nxt`.
+ * - At each iteration, identify two nodes to swap: `first` and `second`.
+ * - Adjust the `next` pointers to perform the swap.
+ * - Update `prev.next` to connect with the new swapped pair.
+ * - Continue this until no more pairs can be swapped.
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        // Base case: 0 or 1 node, nothing to swap
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode curr = head;
+        ListNode prev = null;
+
+        // New head will be the second node after the first swap
+        ListNode newHead = head.next;
+
+        // Traverse in pairs
+        while (curr != null && curr.next != null) {
+            ListNode first = curr;
+            ListNode second = curr.next;
+            ListNode nxt = second.next;
+
+            // Swap the pair
+            second.next = first;
+            first.next = nxt;
+
+            // Connect previous swapped pair to current
+            if (prev != null) {
+                prev.next = second;
+            }
+
+            // Update prev and curr for next iteration
+            prev = first;
+            curr = nxt;
+        }
+
+        return newHead;
+    }
+}
+--

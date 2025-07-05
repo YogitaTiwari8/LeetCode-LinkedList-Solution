@@ -1,0 +1,94 @@
+/*
+ * LeetCode: 146
+ * Problem name: LRU Cache
+ * Link: https://leetcode.com/problems/lru-cache/
+ *
+ * Approach:
+ * - Use a combination of a HashMap and a Doubly Linked List.
+ * - HashMap stores key -> node reference.
+ * - Doubly Linked List maintains the access order, with most recently used at the front.
+ * - When accessing or inserting, move the node to the front.
+ * - If capacity is exceeded, remove the node at the end (least recently used).
+ */
+
+Solution
+--
+class LRUCache {
+    class Node {
+        int key, value;
+        Node prev, next;
+
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    Node head, tail;
+    Map<Integer, Node> map;
+    int capacity;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        map = new HashMap<>();
+
+        // Dummy head and tail
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    public int get(int key) {
+        Node node = map.get(key);
+        if (node == null) return -1;
+
+        moveToHead(node);
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        Node node = map.get(key);
+
+        if (node == null) {
+            Node newNode = new Node(key, value);
+            map.put(key, newNode);
+            addToHead(newNode);
+
+            if (map.size() > capacity) {
+                Node lru = tail.prev;
+                removeNode(lru);
+                map.remove(lru.key);
+            }
+        } else {
+            node.value = value;
+            moveToHead(node);
+        }
+    }
+
+    // Move node to the front
+    private void moveToHead(Node node) {
+        removeNode(node);
+        addToHead(node);
+    }
+
+    // Add node right after head
+    private void addToHead(Node node) {
+        node.next = head.next;
+        node.prev = head;
+
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    // Remove a node from the list
+    private void removeNode(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+
+        prev.next = next;
+        next.prev = prev;
+    }
+}
+--

@@ -1,0 +1,89 @@
+/*
+ * LeetCode: 92
+ * Problem name: Reverse Linked List II
+ * Link: https://leetcode.com/problems/reverse-linked-list-ii/
+ *
+ * Approach:
+ * - First, traverse to the node just before the `left` position (prev).
+ * - Mark the `start` of the sublist to reverse.
+ * - Move to the `right` node, disconnect it by setting its next to null.
+ * - Reverse the sublist using an iterative helper function.
+ * - Connect the reversed sublist back:
+ *   - `prev.next` to the new head of reversed sublist.
+ *   - original `start.next` to the `next` node after `right`.
+ * - If `left == 1`, head of the list changes.
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+    // Helper function to reverse a linked list
+    public ListNode reverse(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode curr = head;
+        ListNode prev = null;
+
+        while (curr != null) {
+            ListNode next = curr.next; // store next
+            curr.next = prev;          // reverse link
+            prev = curr;               // move prev ahead
+            curr = next;               // move curr ahead
+        }
+
+        return prev; // new head
+    }
+
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || head.next == null || left == right) return head;
+
+        int count = 1;
+        ListNode curr = head;
+        ListNode prev = null;
+
+        // Traverse to node before `left`
+        while (count < left) {
+            prev = curr;
+            curr = curr.next;
+            count++;
+        }
+
+        ListNode start = curr;
+
+        // Traverse to node at `right`
+        while (count < right) {
+            curr = curr.next;
+            count++;
+        }
+
+        ListNode next = curr.next;
+        curr.next = null; // Disconnect right part
+
+        // Reverse the sublist
+        ListNode newHead = reverse(start);
+
+        // Connect left part to reversed
+        if (prev != null) {
+            prev.next = newHead;
+        } else {
+            head = newHead; // update head if reversing from node 1
+        }
+
+        // Connect end of reversed sublist to remaining list
+        start.next = next;
+
+        return head;
+    }
+}
+--

@@ -1,0 +1,53 @@
+/*
+ * LeetCode: 141
+ * Problem: Linked List Cycle
+ * Link: https://leetcode.com/problems/linked-list-cycle/
+ *
+ * Approach:
+ * - Use Floyd's Cycle Detection Algorithm (Tortoise and Hare).
+ * - Maintain two pointers: 'slow' moves one step, 'fast' moves two steps.
+ * - If there's a cycle, both will meet at some point.
+ * - If no cycle, 'fast' will reach the end (null).
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
+ */
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+Solution
+--
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false; // no node or only one node, so no cycle
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Move slow by 1 and fast by 2 steps
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            // Cycle detected
+            if (slow == fast) {
+                return true;
+            }
+        }
+
+        return false; // No cycle
+    }
+}
+--

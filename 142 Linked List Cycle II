@@ -1,0 +1,55 @@
+/*
+ * LeetCode: 142
+ * Problem: Linked List Cycle II
+ * Link: https://leetcode.com/problems/linked-list-cycle-ii/
+ *
+ * Approach:
+ * - Use Floyd's Cycle Detection Algorithm to detect the cycle.
+ * - If slow and fast pointers meet, a cycle exists.
+ * - To find the start of the cycle, initialize a new pointer from head.
+ * - Move both pointers one step at a time — they will meet at the start of the cycle.
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
+ */
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+Solution
+--
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Step 1: Detect cycle using slow and fast pointers
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            // Cycle detected
+            if (slow == fast) {
+                // Step 2: Find the start of the cycle
+                ListNode start = head;
+                while (start != slow) {
+                    start = start.next;
+                    slow = slow.next;
+                }
+                return start; // Start node of the cycle
+            }
+        }
+
+        return null; // No cycle
+    }
+}
+--

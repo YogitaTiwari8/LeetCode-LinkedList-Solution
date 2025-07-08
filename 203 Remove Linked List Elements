@@ -1,0 +1,46 @@
+/*
+ * LeetCode: 203 
+ * Problem: Remove Linked List Elements
+ * Link: https://leetcode.com/problems/remove-linked-list-elements/
+ *
+ * Approach:
+ * - First, skip all nodes from the beginning of the list having the target value.
+ * - Then iterate through the rest of the list:
+ *     - If the next node has the target value, bypass it.
+ *     - Otherwise, move the pointer forward.
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+Solution
+--
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        // Skip all starting nodes with the target value
+        while (head != null && head.val == val) {
+            head = head.next;
+        }
+
+        // Remove target value nodes from the rest of the list
+        ListNode curr = head;
+        while (curr != null && curr.next != null) {
+            if (curr.next.val == val) {
+                curr.next = curr.next.next;  // skip the node
+            } else {
+                curr = curr.next;  // move to next node
+            }
+        }
+
+        return head;
+    }
+}
+--

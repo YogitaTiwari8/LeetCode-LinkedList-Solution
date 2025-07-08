@@ -1,0 +1,33 @@
+/*
+ * LeetCode: 237
+ * Problem: Delete Node in a Linked List
+ * Link: https://leetcode.com/problems/delete-node-in-a-linked-list/
+ *
+ * Approach:
+ * - You're given direct access to the node to delete (not the head).
+ * - Copy the value from the next node into the current node.
+ * - Update the current node’s next pointer to skip the next node.
+ *
+ */
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+
+ Solution 
+ --
+class Solution {
+    public void deleteNode(ListNode node) {
+        // Copy value from the next node
+        node.val = node.next.val;
+
+        // Bypass the next node
+        node.next = node.next.next;
+    }
+}
+--

@@ -9,8 +9,6 @@
  * - If there's a cycle, both will meet at some point.
  * - If no cycle, 'fast' will reach the end (null).
  *
- * Time Complexity: O(n)
- * Space Complexity: O(1)
  */
 
 /**

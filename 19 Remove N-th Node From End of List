@@ -1,0 +1,51 @@
+/**
+ * LeetCode: 19
+ * Problem: Remove N-th Node From End of List
+ * Link: https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+ *
+ * Approach:
+ * - First, calculate the total number of nodes in the linked list.
+ * - Subtract `n` from the total size to get the position of the node to remove from the start.
+ * - If the node to remove is the first one, just return `head.next`.
+ * - Otherwise, traverse to the node just before the target and adjust pointers to skip the target node.
+ */
+
+Solution
+--
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode temp = head;
+        int size = 0;
+
+        // Count total number of nodes
+        while (temp != null) {
+            size++;
+            temp = temp.next;
+        }
+
+        // Edge case: if head is null
+        if (head == null) {
+            return null;
+        }
+
+        // Get the position from the start
+        n = size - n;
+
+        // If we need to remove the head node
+        if (n == 0) {
+            return head.next;
+        }
+
+        temp = head;
+        // Traverse to the node just before the target
+        for (int i = 1; i < n; i++) {
+            temp = temp.next;
+        }
+
+        // Remove the target node
+        temp.next = temp.next.next;
+
+        return head;
+    }
+}
+--

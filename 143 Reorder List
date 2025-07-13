@@ -1,0 +1,69 @@
+/*
+ * LeetCode: 143
+ * Problem: Reorder List
+ * Leetcode: https://leetcode.com/problems/reorder-list/
+ *
+ * Approach:
+ * 1. Find the middle of the linked list using the slow and fast pointer technique.
+ * 2. Reverse the second half of the list.
+ * 3. Merge the two halves alternately.
+ */
+
+Solution
+--
+class Solution {
+
+    // Step 1: Find the middle of the linked list
+    public ListNode middle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Move fast by 2 steps and slow by 1 step
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // Step 2: Reverse the linked list
+    public ListNode reverse(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    // Step 3: Reorder the list by merging two halves
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null)
+            return;
+
+        // Find middle node
+        ListNode middle = middle(head);
+
+        // Reverse second half of the list
+        ListNode second = reverse(middle.next);
+        middle.next = null; // Break the list
+
+        // Merge both halves alternately
+        ListNode first = head;
+        while (second != null) {
+            ListNode temp1 = first.next;
+            ListNode temp2 = second.next;
+
+            first.next = second;
+            second.next = temp1;
+
+            first = temp1;
+            second = temp2;
+        }
+    }
+}
+--

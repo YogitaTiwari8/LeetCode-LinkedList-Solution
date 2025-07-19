@@ -1,0 +1,55 @@
+/*
+ * LeetCode: 232
+ * Problem name: Implement Queue using Stacks
+ * Link: https://leetcode.com/problems/implement-queue-using-stacks/
+ *
+ * Approach:
+ * - Use two stacks: stackPush and stackPop.
+ * - All elements are pushed into stackPush.
+ * - When popping or peeking, transfer all elements from stackPush to stackPop only if stackPop is empty.
+ * - This ensures queue order (FIFO) using two LIFO stacks.
+ */
+
+Solution
+--
+class MyQueue {
+    Stack<Integer> stackPush; 
+    Stack<Integer> stackPop;
+
+    public MyQueue() {
+        stackPush = new Stack<>();
+        stackPop = new Stack<>();
+    }
+
+    // Push element x to the back of queue.
+    public void push(int x) {
+        stackPush.push(x);
+    }
+
+    // Helper method: transfer elements from stackPush to stackPop
+    private void shift() {
+        if (stackPop.isEmpty()) {
+            while (!stackPush.isEmpty()) {
+                stackPop.push(stackPush.pop());
+            }
+        }
+    }
+
+    // Removes the element from in front of queue and returns it.
+    public int pop() {
+        shift();
+        return stackPop.pop();
+    }
+
+    // Get the front element.
+    public int peek() {
+        shift();
+        return stackPop.peek();
+    }
+
+    // Returns whether the queue is empty.
+    public boolean empty() {
+        return stackPush.isEmpty() && stackPop.isEmpty();
+    }
+}
+--
